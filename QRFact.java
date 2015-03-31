@@ -1,6 +1,15 @@
 //https://github.com/bbjelly/Math2605.git
 import java.util.ArrayList;
 public class QRFact {
+    public static Matrix hilbertMatrix(int dim) {
+        double[][] hilb = new double[dim][dim];
+        for (int r = 1; r <= dim; r++) {
+            for (int c = 0; c < dim; c++) {
+                hilb[r-1][c] = (double) 1/(r+c);
+            }
+        }
+        return new Matrix(hilb);
+    }
     //square matrix
     //Q, R, error (ArrayList order)
     public static ArrayList<Object> qr_fact_househ(Matrix matrix)
@@ -24,6 +33,11 @@ public class QRFact {
         Matrix error = LinearAlgebra.matrixAdd(
                     LinearAlgebra.matrixMatrixMultiply(q, (Matrix) qr.get(1)),
                     LinearAlgebra.scalarMultMatrix(matrix, -1));
+        double errorMax = error(error);
+        qr.add(errorMax);
+        return qr;
+    }
+    public static double error(Matrix error) {
         double errorMax = 0;
         double rowSum = 0;
         for (int i = 0; i < error.getHeight(); i++) {
@@ -35,8 +49,7 @@ public class QRFact {
             }
             rowSum = 0;
         }
-        qr.add(errorMax);
-        return qr;
+        return errorMax;
     }
     public static Vector e1Gen(int rowNum) {
         double[] e1 = new double[rowNum];
@@ -136,17 +149,7 @@ public class QRFact {
         Matrix error = LinearAlgebra.matrixAdd(
                     LinearAlgebra.matrixMatrixMultiply(q, (Matrix) qr.get(1)),
                     LinearAlgebra.scalarMultMatrix(matrix, -1));
-        double errorMax = 0;
-        double rowSum = 0;
-        for (int i = 0; i < error.getHeight(); i++) {
-            for (int j = 0; j < error.getWidth(); j++) {
-                rowSum += Math.abs(error.get(i,j));
-            }
-            if (rowSum > errorMax) {
-                errorMax = rowSum;
-            }
-            rowSum = 0;
-        }
+        double errorMax = error(error);
         qr.add(errorMax);
         return qr;
     }

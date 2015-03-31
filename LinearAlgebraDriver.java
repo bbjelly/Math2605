@@ -9,7 +9,7 @@ import java.util.Scanner;
 /**
  * Driver for Linear Algebra.
  *
- * @author Valerie Avva
+ * @author Sally Kim
  * @version 1.1
  */
 public class LinearAlgebraDriver {
